@@ -1,0 +1,163 @@
+﻿// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "NativeGameplayTags.h"
+
+
+/***
+ * FightGameplayTags.h - 声明游戏中的 Gameplay Tags
+ * 包含输入标签、玩家能力标签、武器标签和玩家事件标签等游戏核心标签定义
+ *
+ * Gameplay Tags 是 Unreal Engine 中用于分类、识别和管理游戏对象状态的系统，
+ * 它提供了一种灵活且可扩展的方法来处理游戏逻辑，避免硬编码的字符串比较和大量的布尔标志位
+ *
+ * 标签采用层次化命名方式，例如 "Player.Ability.Equip.Axe"，便于管理和查找
+ * 所有标签都在此文件中声明，并在对应的 .cpp 文件中定义
+***/
+
+
+namespace FightGameplayTags
+{
+	/**
+	 * Input Tags - 输入标签，用于映射玩家输入操作到游戏功能 *
+	 **/
+
+	// 基础移动输入标签，用于绑定角色移动操作
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Move);
+
+	// 视角控制输入标签，用于绑定视角/摄像机控制操作
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Look);
+
+	// 斧头装备/卸下相关输入标签
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_EquipAxe);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_UnequipAxe);
+
+	// 矛装备/卸下相关输入标签
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_EquipSpear);  // 注意：此处可能有拼写错误，应该是Spear
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_UnequipSpear);
+
+	// 斧头攻击输入标签
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LightAttack_Axe);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack_Axe);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Roll);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SwitchTarget);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Light);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Heavy);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_PickUp_Stones);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld_Block);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable_TargetLock);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable_Rage);
+
+	// 矛攻击输入标签
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LightAttack_Spear);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack_Spear);
+
+	/**
+	 * Player Tags - 玩家标签，描述玩家能力、状态和事件
+	 **/
+
+	 // 玩家斧头相关能力标签
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Axe);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unequip_Axe);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Heavy_Axe);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Light_Axe);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_HitPause);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Roll);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Block);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_TargetLock);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Rage);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAbility_Light);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAbility_Heavy);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_PickUp_Stones);
+
+	// 玩家矛相关能力标签
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Spear);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unequip_Spear);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Heavy_Spear);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Light_Spear);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Light);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Heavy);
+
+	// 玩家武器标签，用于标识当前装备的武器类型
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Axe);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Spear);
+
+	// 玩家装备事件标签，用于触发装备相关的事件
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equip_Axe);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Axe);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_HitPause);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SuccessfulBlock);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Left);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Right);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ConsumeStones);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equip_Spear);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Spear);
+
+	// 玩家状态标签，表示玩家可以执行终结技的状态
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Blocking);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_TargetLock);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Activating);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Active);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Full);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_None);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy);
+
+	/** Enemy Tags - 敌人标签 **/
+
+	// 敌人武器标签
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Melee);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Ranged);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_SummonEnemies);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_SpawnStone);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Event_SummonEnemies);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Strafing);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_UnderAttack);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Unblockable);
+
+	/** Shared Tags - 共享标签，可被玩家和敌人共同使用 **/
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Ability_HitReact);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Ability_Death);
+
+	// 近战攻击命中事件标签，用于处理攻击命中逻辑
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_HitReact);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_SpawnProjectile);
+
+	// 基础伤害标签，用于设置调用者指定的基础伤害值
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_BaseDamage);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_Dead);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Front);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Left);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Right);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Back);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_Invincible);
+
+	/** Game Data Tags **/
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_SurvivalGameModeMap);
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_MainMenuMap);
+
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SaveGame_Slot_1);
+
+}
