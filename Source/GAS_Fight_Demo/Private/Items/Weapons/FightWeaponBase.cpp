@@ -57,19 +57,9 @@ void AFightWeaponBase::OnCollisionBoxBeginOverlap(UPrimitiveComponent* Overlappe
 
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		//if (UFightFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn, HitPawn))
-		//{
-			//OnWeaponHitTarget.ExecuteIfBound(OtherActor);
-		//}
-
-		if (HitPawn != WeaponOwningPawn)
+		if (UFightFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn, HitPawn))
 		{
 			OnWeaponHitTarget.ExecuteIfBound(OtherActor);
-#pragma region Debug
-#if DEBUG
-			Debug::Print(GetName() + TEXT(" begin overlap with ") + HitPawn->GetName(), FColor::Green);
-#endif
-#pragma endregion
 		}
 	}
 }
@@ -82,19 +72,9 @@ void AFightWeaponBase::OnCollisionBoxEndOverlap(UPrimitiveComponent* OverlappedC
 
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		//if (UFightFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn, HitPawn))
-		//{
-			/*OnWeaponPulledFromTarget.ExecuteIfBound(OtherActor);*/
-		//}
-
-		if (HitPawn != WeaponOwningPawn)
+		if (UFightFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn, HitPawn))
 		{
 			OnWeaponPulledFromTarget.ExecuteIfBound(OtherActor);
-#pragma region Debug
-#if DEBUG
-			Debug::Print(GetName() + TEXT(" end overlap with ") + HitPawn->GetName());
-#endif
-#pragma endregion
 		}
 	}
 

@@ -11,9 +11,9 @@
 #include "GASBasicCharacter.generated.h"
 
 
-//class UAbilitySystemComponent;
 class UFightAbilitySystemComponent;
 class UDataAsset_StartUpDataBase;
+class UMotionWarpingComponent;
 
 
 /**
@@ -107,6 +107,15 @@ protected:
 	 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	TObjectPtr<UBasicAttributeSet> BasicAttributeSet;
+
+	/**
+	 * @brief 运动扭曲组件
+	 *
+	 * 角色的运动扭曲组件，负责处理角色的运动扭曲效果
+	 * 如调整角色动画以匹配环境或目标位置
+	 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MotionWarping")
+	UMotionWarpingComponent* MotionWarpingComponent;
 
 	/**
 	 * @brief 角色启动数据

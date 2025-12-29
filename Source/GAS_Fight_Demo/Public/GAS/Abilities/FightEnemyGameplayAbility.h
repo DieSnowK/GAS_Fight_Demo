@@ -51,6 +51,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Fight|Ability")
 	UEnemyCombatComponent* GetEnemyCombatComponentFromActorInfo();
 
+	UFUNCTION(BlueprintPure, Category = "Fight|Ability")
+	FGameplayEffectSpecHandle MakeEnemyDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass,
+		const FScalableFloat& InDamageScalableFloat);
+
 private:
 	/**
 	 * @brief 缓存的敌人角色引用
@@ -60,5 +64,5 @@ private:
 	 * 这样可以避免强引用导致的对象无法被垃圾回收
 	 * TWeakObjectPtr用于引用 UObject 派生对象但不拥有其生命周期，即不会阻止对象被销毁
 	 */
-	TWeakObjectPtr<AEnemyCharacter> CachedWarriorEnemyCharacter;
+	TWeakObjectPtr<AEnemyCharacter> CachedFightEnemyCharacter;
 };

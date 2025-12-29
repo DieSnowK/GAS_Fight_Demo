@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 using UnrealBuildTool;
 using UnrealBuildTool.Rules;
@@ -12,6 +12,7 @@ public class GAS_Fight_Demo : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] { 
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
             "GameplayAbilities", "GameplayTags", "GameplayTasks",
+            "AnimGraphRuntime", "MotionWarping"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

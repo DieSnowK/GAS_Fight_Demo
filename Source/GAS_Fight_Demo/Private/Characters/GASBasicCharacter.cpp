@@ -3,6 +3,7 @@
 
 #include "Characters/GASBasicCharacter.h"
 #include "GAS/FightAbilitySystemComponent.h"
+#include "MotionWarpingComponent.h"
 
 
 /**
@@ -34,7 +35,7 @@ AGASBasicCharacter::AGASBasicCharacter()
 	// 属性集组件包含角色的所有属性，如生命值、怒气值等
 	BasicAttributeSet = CreateDefaultSubobject<UBasicAttributeSet>(TEXT("BasicAttributeSet"));
 
-	//MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
+	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 }
 
 UAbilitySystemComponent* AGASBasicCharacter::GetAbilitySystemComponent() const

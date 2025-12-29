@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,12 +6,15 @@
 #include "Components/Combat/PawnCombatComponent.h"
 #include "EnemyCombatComponent.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class GAS_FIGHT_DEMO_API UEnemyCombatComponent : public UPawnCombatComponent
 {
 	GENERATED_BODY()
 	
+public:
+	virtual void OnHitTargetActor(AActor* HitActor) override;
+
+protected:
+	//virtual void ToggleBodyCollisionBoxCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType) override;
 };

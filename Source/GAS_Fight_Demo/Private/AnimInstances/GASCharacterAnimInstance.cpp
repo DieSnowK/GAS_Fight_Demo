@@ -4,7 +4,7 @@
 #include "AnimInstances/GASCharacterAnimInstance.h"
 #include "Characters/GASBasicCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
-//#include "KismetAnimationLibrary.h"
+#include "KismetAnimationLibrary.h"
 
 
 void UGASCharacterAnimInstance::NativeInitializeAnimation()
@@ -35,5 +35,7 @@ void UGASCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSecon
 	// SizeSquared2D()计算二维平面上加速度大小的平方 -> 与0比较平方值避免开方运算，提高性能
 	bHasAcceleration = OwningMovementComponent->GetCurrentAcceleration().SizeSquared2D() > 0.f;
 
-	//LocomotionDirection = UKismetAnimationLibrary::CalculateDirection(OwningCharacter->GetVelocity(), OwningCharacter->GetActorRotation());
+	// 计算角色运动方向相对于角色朝向的角度 --> 这个值通常用于动画蓝图，控制8方向移动动画的混合
+	LocomotionDirection = UKismetAnimationLibrary::CalculateDirection(
+		OwningCharacter->GetVelocity(), OwningCharacter->GetActorRotation());
 }
