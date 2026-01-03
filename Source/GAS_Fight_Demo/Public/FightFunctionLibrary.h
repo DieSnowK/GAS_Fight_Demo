@@ -8,7 +8,6 @@
 #include "FightFunctionLibrary.generated.h"
 
 
-
 class UFightAbilitySystemComponent;
 
 
@@ -111,4 +110,10 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Fight|FunctionLibrary")
 	static bool IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetPawn);
+
+	UFUNCTION(BlueprintPure, Category = "Fight|FunctionLibrary", meta = (CompactNodeTitle = "Get Value at Level"))
+	static float GetScalableFloatValueAtLevel(const FScalableFloat& InScalableFloat, float InLevel = 1.0f);
+
+	UFUNCTION(BlueprintPure, Category = "Fight|FunctionLibrary")
+	static FGameplayTag ComputeHitReactDirection(AActor* InAttacker, AActor* InVictim, float& OutAngleDifference);
 };

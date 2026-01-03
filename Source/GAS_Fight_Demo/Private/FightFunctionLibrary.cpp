@@ -6,6 +6,9 @@
 #include "GenericTeamAgentInterface.h"
 #include "GAS/FightAbilitySystemComponent.h"
 #include "Interfaces/PawnCombatInterface.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "GAS/FightGameplayTags.h"
+
 
 UFightAbilitySystemComponent* UFightFunctionLibrary::NativeGetFighterASCFromActor(AActor* InActor)
 {
@@ -84,4 +87,52 @@ bool UFightFunctionLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetP
 	}
 
 	return false;
+}
+
+float UFightFunctionLibrary::GetScalableFloatValueAtLevel(const FScalableFloat& InScalableFloat, float InLevel)
+{
+	return InScalableFloat.GetValueAtLevel(InLevel);
+}
+
+FGameplayTag UFightFunctionLibrary::ComputeHitReactDirection(
+	AActor* InAttacker, AActor* InVictim, float& OutAngleDifference)
+{
+	check(InAttacker && InVictim);
+
+	const FVector VictimForward = InVictim->GetActorForwardVector();
+	const FVector VictimToAttackerNormalized = (InAttacker->GetActorLocation() - InVictim->GetActorLocation()).GetSafeNormal();
+
+	// 点积: 计算受害者正前方与受害者指向攻击者方向之间的夹角
+	const float DotResult = FVector::DotProduct(VictimForward, VictimToAttackerNormalized);
+	// 此处的结果是0~180之间的正值
+	OutAngleDifference = UKismetMathLibrary::DegAcos(DotResult);
+
+	// 叉积: 确定攻击者在受害者的左侧还是右侧 --> 标准右手法则: 左上右下 --> 但是在UE中是左手法则，所以是左下右上
+	// 叉积几何意义：A×B的结果向量垂直于A和B构成的平面 --> 在UE坐标系中：Z轴向上，所以叉积的Z分量符号表示左右关系
+	const FVector CrossResult = FVector::CrossProduct(VictimForward, VictimToAttackerNormalized);
+
+	if (CrossResult.Z < 0.0f)
+	{
+		OutAngleDifference *= -1.0f;
+	}
+
+	// 受击方向计算
+	if (OutAngleDifference >= -45.0f && OutAngleDifference <= 45.0f)
+	{
+		return FightGameplayTags::Shared_Status_HitReact_Front;
+	}
+	else if (OutAngleDifference < 45.f && OutAngleDifference >= -135.0f)
+	{
+		return FightGameplayTags::Shared_Status_HitReact_Left;
+	}
+	else if (OutAngleDifference < -135.0f || OutAngleDifference > 135.0f)
+	{
+		return FightGameplayTags::Shared_Status_HitReact_Back;
+	}
+	else if (OutAngleDifference > 45.0f && OutAngleDifference <= 135.0f)
+	{
+		return FightGameplayTags::Shared_Status_HitReact_Right;
+	}
+
+	return FightGameplayTags::Shared_Status_HitReact_Front;
 }

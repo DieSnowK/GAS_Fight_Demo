@@ -38,9 +38,21 @@ class GAS_FIGHT_DEMO_API UBTTask_RotateToFaceTarget : public UBTTaskNode
 	virtual FString GetStaticDescription() const override;
 	// ~ End UBTNode Interface
 
+	/**
+	 * @brief 行为树任务开始执行时调用
+	 * 
+	 * @return EBTNodeResult::Type 任务的初始执行结果
+	 */
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+
+	/**
+	 * @brief 每帧更新任务：当任务返回InProgress时，每帧调用此函数
+	 */
 	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
+	/**
+	 * @brief 检查AI是否已达到面向目标的角度精度
+	 */
 	bool HasReachedAnglePrecision(APawn* QueryPawn, AActor* TargetActor) const;
 
 	UPROPERTY(EditAnywhere, Category = "Face Target")
