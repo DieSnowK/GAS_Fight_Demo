@@ -5,6 +5,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "FightFunctionLibrary.h"
 #include "GAS/FightGameplayTags.h"
+#include "FightFunctionLibrary.h"
 
 #include "GASDebugHelper.h"
 
@@ -15,18 +16,19 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 	{
 		return;
 	}
-
 	OverlappedActors.AddUnique(HitActor);
 
-	//// TODO::Implement block check
 	bool bIsValidBlock = false;
 
-	const bool bIsPlayerBlocking = UFightFunctionLibrary::NativeDoesActorHaveTag(HitActor, FightGameplayTags::Player_Status_Blocking);
-	const bool bIsMyAttackUnblockable = UFightFunctionLibrary::NativeDoesActorHaveTag(GetOwningPawn(), FightGameplayTags::Enemy_Status_Unblockable);
+	const bool bIsPlayerBlocking = UFightFunctionLibrary::NativeDoesActorHaveTag(
+		HitActor, FightGameplayTags::Player_Status_Blocking);
+	const bool bIsMyAttackUnblockable = UFightFunctionLibrary::NativeDoesActorHaveTag(
+		GetOwningPawn(), FightGameplayTags::Enemy_Status_Unblockable);
 
+	// 检测Block是否有效
 	if (bIsPlayerBlocking && !bIsMyAttackUnblockable)
 	{
-	//	bIsValidBlock = UFightFunctionLibrary::IsValidBlock(GetOwningPawn(), HitActor);
+		bIsValidBlock = UFightFunctionLibrary::IsValidBlock(GetOwningPawn(), HitActor);
 	}
 
 	FGameplayEventData EventData;
@@ -35,8 +37,8 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 
 	if (bIsValidBlock)
 	{
-	//	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(HitActor,
-	//		FightGameplayTags::Player_Event_SuccessfulBlock, EventData);
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(HitActor,
+			FightGameplayTags::Player_Event_SuccessfulBlock, EventData);
 	}
 	else
 	{

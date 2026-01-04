@@ -4,6 +4,7 @@
 #include "GAS/FightAbilitySystemComponent.h"
 #include "GAS/FightGameplayTags.h"
 #include "GAS/Abilities/FightPlayerGameplayAbility.h"
+#include "GAS/FightGameplayTags.h"
 
 
 void UFightAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
@@ -18,7 +19,6 @@ void UFightAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InI
 	{
 		// 检查能力规格的动态标签是否精确匹配输入标签，不匹配则继续下一个能力
 		if (!AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InInputTag)) continue;
-		// if (!AbilitySpec.DynamicAbilityTags().HasTagExact(InInputTag)) continue; // 已弃用
 
 		//if (InInputTag.MatchesTag(FightGameplayTags::InputTag_Toggleable) && AbilitySpec.IsActive())
 		//{
@@ -34,6 +34,24 @@ void UFightAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InI
 
 void UFightAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
 {
+	if (!InInputTag.IsValid() || !InInputTag.MatchesTag(FightGameplayTags::InputTag_MustBeHeld))
+	{
+		return;
+	}
+
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		// 修改此处逻辑，只取消那些明确需要释放事件的能力 --> 对于普通点击触发的攻击动画等能力，不应在此处被取消
+		if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InInputTag) && AbilitySpec.IsActive())
+		{
+			// 检查能力是否真的需要在输入释放时取消 --> 只有带有InputTag_MustBeHeld标签的能力才会在输入释放时被取消
+			if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(FightGameplayTags::InputTag_MustBeHeld) ||
+				InInputTag.MatchesTag(FightGameplayTags::InputTag_MustBeHeld_Block))
+			{
+				CancelAbilityHandle(AbilitySpec.Handle);
+			}
+		}
+	}
 }
 
 void UFightAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FFightPlayerAbilitySet>& InDefaultWeaponAbilities,

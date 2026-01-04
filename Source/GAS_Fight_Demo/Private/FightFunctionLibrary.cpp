@@ -9,6 +9,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GAS/FightGameplayTags.h"
 
+#include "GASDebugHelper.h"
+
 
 UFightAbilitySystemComponent* UFightFunctionLibrary::NativeGetFighterASCFromActor(AActor* InActor)
 {
@@ -135,4 +137,14 @@ FGameplayTag UFightFunctionLibrary::ComputeHitReactDirection(
 	}
 
 	return FightGameplayTags::Shared_Status_HitReact_Front;
+}
+
+bool UFightFunctionLibrary::IsValidBlock(AActor* InAttacker, AActor* InDefender)
+{
+	check(InAttacker && InDefender);
+
+	// cos --> 1.0: 平行, 0.0: 垂直, -1.0: 反向
+	const float DotResult = FVector::DotProduct(InAttacker->GetActorForwardVector(), InDefender->GetActorForwardVector());
+
+	return DotResult < -0.5f; // 60 | 60
 }
