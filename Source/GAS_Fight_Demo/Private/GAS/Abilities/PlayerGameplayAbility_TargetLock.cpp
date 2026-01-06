@@ -67,7 +67,7 @@ void UPlayerGameplayAbility_TargetLock::OnTargetLockTick(float DeltaTime)
 			CurrentLockedActor->GetActorLocation()
 		);
 
-		//LookAtRot -= FRotator(TargetLockCameraOffsetDistance, 0.f, 0.f);
+		LookAtRot -= FRotator(TargetLockCameraOffsetDistance, 0.f, 0.f);
 
 		const FRotator CurrentControlRot = GetPlayerControllerFromActorInfo()->GetControlRotation();
 		const FRotator TargetRot = FMath::RInterpTo(CurrentControlRot,LookAtRot, DeltaTime, TargetLockRotationInterpSpeed);

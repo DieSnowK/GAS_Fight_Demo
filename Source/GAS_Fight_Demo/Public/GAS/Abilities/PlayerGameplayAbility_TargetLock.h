@@ -114,6 +114,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
 	UInputMappingContext* TargetLockMappingContext;
 
+	// 目标锁定时相机偏移距离
+	UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
+	float TargetLockCameraOffsetDistance = 15.f;
+
 	// 存储找到的可锁定目标Actor列表
 	UPROPERTY()
 	TArray<AActor*> AvailableActorsToLock;
