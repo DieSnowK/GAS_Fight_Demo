@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Characters/MainCharacter.h"
+ #include "Characters/MainCharacter.h"
 
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -22,6 +22,7 @@
 #include "DataAsset/StartUpData/DataAsset_StartUpDataBase.h"
 #include "Components/Combat/PlayerCombatComponent.h"
 #include "Components/UI/PlayerUIComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 
 AMainCharacter::AMainCharacter()
@@ -125,15 +126,13 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	// ETriggerEvent::Triggered表示触发事件（持续按住）
 	FightInputComponent->BindNativeInputAction(InputConfigDataAsset, FightGameplayTags::InputTag_Move,
 		ETriggerEvent::Triggered, this, &ThisClass::Input_Move); // 编译器自动推导泛型参数了
-
 	FightInputComponent->BindNativeInputAction(InputConfigDataAsset, FightGameplayTags::InputTag_Look,
 		ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
 
-	//FightInputComponent->BindNativeInputAction(InputConfigDataAsset, FightGameplayTags::InputTag_SwitchTarget,
-	//	ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
-
-	//FightInputComponent->BindNativeInputAction(InputConfigDataAsset, FightGameplayTags::InputTag_SwitchTarget,
-	//	ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
+	FightInputComponent->BindNativeInputAction(InputConfigDataAsset, FightGameplayTags::InputTag_SwitchTarget,
+		ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
+	FightInputComponent->BindNativeInputAction(InputConfigDataAsset, FightGameplayTags::InputTag_SwitchTarget,
+		ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
 
 	//FightInputComponent->BindNativeInputAction(InputConfigDataAsset, FightGameplayTags::InputTag_PickUp_Stones,
 	//	ETriggerEvent::Started, this, &ThisClass::Input_PickUpStonesStarted);
@@ -219,6 +218,22 @@ void AMainCharacter::Input_Look(const FInputActionValue& InputActionValue)
 	{
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AMainCharacter::Input_SwitchTargetTriggered(const FInputActionValue& InputActionValue)
+{
+	SwitchDirection = InputActionValue.Get<FVector2D>();
+}
+
+void AMainCharacter::Input_SwitchTargetCompleted(const FInputActionValue& InputActionValue)
+{
+	FGameplayEventData Data;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		this,
+		SwitchDirection.X > 0.f ? FightGameplayTags::Player_Event_SwitchTarget_Right : FightGameplayTags::Player_Event_SwitchTarget_Left,
+		Data
+	);
 }
 
 void AMainCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)

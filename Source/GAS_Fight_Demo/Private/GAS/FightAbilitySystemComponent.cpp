@@ -4,7 +4,6 @@
 #include "GAS/FightAbilitySystemComponent.h"
 #include "GAS/FightGameplayTags.h"
 #include "GAS/Abilities/FightPlayerGameplayAbility.h"
-#include "GAS/FightGameplayTags.h"
 
 
 void UFightAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
@@ -20,15 +19,16 @@ void UFightAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InI
 		// 检查能力规格的动态标签是否精确匹配输入标签，不匹配则继续下一个能力
 		if (!AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InInputTag)) continue;
 
-		//if (InInputTag.MatchesTag(FightGameplayTags::InputTag_Toggleable) && AbilitySpec.IsActive())
-		//{
-		//	CancelAbilityHandle(AbilitySpec.Handle);
-		//}
-		//else
-		//{
-		//	TryActivateAbility(AbilitySpec.Handle);
-		//}
-		TryActivateAbility(AbilitySpec.Handle);
+		// 如果是 切换类 的能力，并且当前已经激活，则取消该能力
+		if (InInputTag.MatchesTag(FightGameplayTags::InputTag_Toggleable) && AbilitySpec.IsActive())
+		{
+			CancelAbilityHandle(AbilitySpec.Handle);
+		}
+		// 否则，尝试激活该能力
+		else
+		{
+			TryActivateAbility(AbilitySpec.Handle);
+		}
 	}
 }
 

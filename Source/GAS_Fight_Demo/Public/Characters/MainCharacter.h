@@ -124,8 +124,17 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UDataAsset_InputConfig> InputConfigDataAsset;
 
+	/**
+	 * @brief 切换目标方向
+	 */
+	UPROPERTY()
+	FVector2D SwitchDirection = FVector2D::ZeroVector;
+
 	void Input_Move(const FInputActionValue& InputActionValue);
 	void Input_Look(const FInputActionValue& InputActionValue);
+
+	void Input_SwitchTargetTriggered(const FInputActionValue& InputActionValue);
+	void Input_SwitchTargetCompleted(const FInputActionValue& InputActionValue);
 
 	/**
 	 * @brief 处理能力输入按下事件
