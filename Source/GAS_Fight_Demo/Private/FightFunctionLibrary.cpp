@@ -148,3 +148,14 @@ bool UFightFunctionLibrary::IsValidBlock(AActor* InAttacker, AActor* InDefender)
 
 	return DotResult < -0.5f; // 60 | 60
 }
+
+bool UFightFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(AActor* InInstigator,
+	AActor* InTargetActor, const FGameplayEffectSpecHandle& InSpecHandle)
+{
+	UFightAbilitySystemComponent* SourceASC = NativeGetFighterASCFromActor(InInstigator);
+	UFightAbilitySystemComponent* TargetASC = NativeGetFighterASCFromActor(InTargetActor);
+
+	FActiveGameplayEffectHandle ActiveGameplayEffectHandle = SourceASC->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC);
+
+	return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}

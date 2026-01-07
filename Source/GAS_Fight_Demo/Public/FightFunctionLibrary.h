@@ -9,6 +9,7 @@
 
 
 class UFightAbilitySystemComponent;
+struct FGameplayEffectSpecHandle;
 
 
 /**
@@ -119,4 +120,8 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Fight|FunctionLibrary")
 	static bool IsValidBlock(AActor* InAttacker, AActor* InDefender);
+
+	UFUNCTION(BlueprintCallable, Category = "Fight|FunctionLibrary")
+	static bool ApplyGameplayEffectSpecHandleToTargetActor(AActor* InInstigator, 
+		AActor* InTargetActor, const FGameplayEffectSpecHandle& InSpecHandle);
 };

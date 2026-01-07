@@ -12,7 +12,7 @@ public class GAS_Fight_Demo : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] { 
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
             "GameplayAbilities", "GameplayTags", "GameplayTasks",
-            "AnimGraphRuntime", "MotionWarping"
+            "AnimGraphRuntime", "MotionWarping", "Niagara"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
