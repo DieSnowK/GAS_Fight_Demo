@@ -10,6 +10,7 @@
 class UEnemyCombatComponent;
 class UEnemyUIComponent;
 class UWidgetComponent;
+class UBoxComponent;
 
 
 /**
@@ -77,6 +78,17 @@ protected:
 	virtual void PossessedBy(AController* NewController) override;
 	//~ End APawn Interface.
 
+#if WITH_EDITOR
+	/**
+	 * @brief 编辑器属性变化后处理函数 -> 当在编辑器中修改Actor的属性后，这个函数会被自动调用
+	 * 
+	 * 用于在属性变化时执行一些特定的更新逻辑
+	 */
+	//~ Begin UObject Interface.
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
+	//~ End UObject Interface.
+#endif
+
 	/**
 	 * @brief 敌人战斗组件
 	 *
@@ -86,11 +98,28 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	UEnemyCombatComponent* EnemyCombatComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	UBoxComponent* LeftHandCollisionBox;
+
+	// 骨骼名称，用于在Editor中附加左手碰撞盒
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	FName LeftHandCollisionAttachmentBoneName;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	UBoxComponent* RightHandCollisionBox;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	FName RightHandCollisionAttachmentBoneName;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	UEnemyUIComponent* EnemyUIComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	UWidgetComponent* EnemyHealthWidgetComponent;
+
+	UFUNCTION()
+	virtual void OnBodyCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 private:
 	/**
@@ -117,5 +146,15 @@ public:
 	FORCEINLINE UEnemyCombatComponent* GetEnemyCombatComponent() const
 	{
 		return EnemyCombatComponent;
+	}
+
+	FORCEINLINE UBoxComponent* GetLeftHandCollisionBox() const
+	{
+		return LeftHandCollisionBox;
+	}
+
+	FORCEINLINE UBoxComponent* GetRightHandCollisionBox() const
+	{
+		return RightHandCollisionBox;
 	}
 };

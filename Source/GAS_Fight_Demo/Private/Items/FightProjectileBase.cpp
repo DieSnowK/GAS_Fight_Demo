@@ -18,10 +18,16 @@ AFightProjectileBase::AFightProjectileBase()
 
 	ProjectileCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("ProjectileCollisionBox"));
 	SetRootComponent(ProjectileCollisionBox);
+
+	// 只用于查询
 	ProjectileCollisionBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+	// 设置碰撞响应：阻挡玩家、动态物体和静态物体
 	ProjectileCollisionBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
 	ProjectileCollisionBox->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 	ProjectileCollisionBox->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+
+	// 绑定碰撞和重叠事件
 	ProjectileCollisionBox->OnComponentHit.AddUniqueDynamic(this, &ThisClass::OnProjectileHit);
 	ProjectileCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnProjectileBeginOverlap);
 
@@ -34,6 +40,7 @@ AFightProjectileBase::AFightProjectileBase()
 	ProjectileMovementComp->Velocity = FVector(1.f, 0.f, 0.f);
 	ProjectileMovementComp->ProjectileGravityScale = 0.f;
 
+	// 设置投射物生命周期（4秒后自动销毁）
 	InitialLifeSpan = 4.f;
 }
 
@@ -41,6 +48,7 @@ void AFightProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// 根据伤害策略调整碰撞设置
 	if (ProjectileDamagePolicy == EProjectileDamagePolicy::OnBeginOverlap)
 	{
 		ProjectileCollisionBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
@@ -50,8 +58,10 @@ void AFightProjectileBase::BeginPlay()
 void AFightProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, 
 	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	// 调用蓝图事件生成命中特效
 	BP_OnSpawnProjectileHitFX(Hit.ImpactPoint);
 
+	// 检查碰撞对象是否为Pawn且是否为敌对目标
 	APawn* HitPawn = Cast<APawn>(OtherActor);
 	if (!HitPawn || !UFightFunctionLibrary::IsTargetPawnHostile(GetInstigator(), HitPawn))
 	{
@@ -113,9 +123,11 @@ void AFightProjectileBase::HandleApplyProjectileDamage(APawn* InHitPawn, const F
 	checkf(ProjectileDamageEffectSpecHandle.IsValid(), 
 		TEXT("ProjectileDamageEffectSpecHandle is not valid: %s"), *GetActorNameOrLabel());
 
+	// 应用GameplayEffect到目标Actor
 	const bool bWasApplied = UFightFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(
 		GetInstigator(), InHitPawn, ProjectileDamageEffectSpecHandle);
 
+	// 如果成功应用伤害，发送受击反应事件
 	if (bWasApplied)
 	{
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(

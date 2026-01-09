@@ -152,6 +152,12 @@ public:
 
 protected:
 	virtual void ToggleCurrentEquippedWeaponCollision(bool bShouldEnable);
+
+	/**
+	 * @brief 切换身体部位碰撞盒的碰撞状态
+	 * 
+	 * 不在PawnCombatComponent中实现, 在具体的子类中进行实现
+	 */
 	virtual void ToggleBodyCollisionBoxCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType);
 
 	/**

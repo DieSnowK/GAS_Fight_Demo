@@ -5,7 +5,8 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "FightFunctionLibrary.h"
 #include "GAS/FightGameplayTags.h"
-#include "FightFunctionLibrary.h"
+#include "Characters/EnemyCharacter.h"
+#include "Components/BoxComponent.h"
 
 #include "GASDebugHelper.h"
 
@@ -44,5 +45,36 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 	{
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(),
 			FightGameplayTags::Shared_Event_MeleeHit, EventData);
+	}
+}
+
+void UEnemyCombatComponent::ToggleBodyCollisionBoxCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType)
+{
+	AEnemyCharacter* OwningEnemyCharacter = GetOwningPawn<AEnemyCharacter>();
+	check(OwningEnemyCharacter);
+
+	UBoxComponent* LeftHandCollisionBox = OwningEnemyCharacter->GetLeftHandCollisionBox();
+	UBoxComponent* RightHandCollisionBox = OwningEnemyCharacter->GetRightHandCollisionBox();
+	check(LeftHandCollisionBox && RightHandCollisionBox);
+
+	switch (ToggleDamageType)
+	{
+	case EToggleDamageType::LeftHand:
+		LeftHandCollisionBox->SetCollisionEnabled(
+			bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+		break;
+
+	case EToggleDamageType::RightHand:
+		RightHandCollisionBox->SetCollisionEnabled(
+			bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+		break;
+
+	default:
+		break;
+	}
+
+	if (!bShouldEnable)
+	{
+		OverlappedActors.Empty();
 	}
 }

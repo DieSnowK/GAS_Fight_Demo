@@ -9,6 +9,8 @@
 #include "Components/Combat/EnemyCombatComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Widgets/FightWidgetBase.h"
+#include "Components/BoxComponent.h"
+#include "FightFunctionLibrary.h"
 
 #include "GASDebugHelper.h"
 
@@ -42,15 +44,15 @@ AEnemyCharacter::AEnemyCharacter()
  	EnemyHealthWidgetComponent = CreateDefaultSubobject<UWidgetComponent>("EnemyHealthWidgetComponent");
  	EnemyHealthWidgetComponent->SetupAttachment(GetMesh());
  
- 	//LeftHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("LeftHandCollisionBox");
- 	//LeftHandCollisionBox->SetupAttachment(GetMesh());
- 	//LeftHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
- 	//LeftHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
+ 	LeftHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("LeftHandCollisionBox");
+ 	LeftHandCollisionBox->SetupAttachment(GetMesh());
+ 	LeftHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+ 	LeftHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
  
- 	//RightHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("RightHandCollisionBox");
- 	//RightHandCollisionBox->SetupAttachment(GetMesh());
- 	//RightHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
- 	//RightHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
+ 	RightHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("RightHandCollisionBox");
+ 	RightHandCollisionBox->SetupAttachment(GetMesh());
+ 	RightHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+ 	RightHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
 }
 
 UPawnCombatComponent* AEnemyCharacter::GetPawnCombatComponent() const
@@ -83,6 +85,39 @@ void AEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	InitEnemyStartUpData();
+}
+
+#if WITH_EDITOR
+void AEnemyCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	// 如果修改了这个属性，重新将左手碰撞盒附加到指定的骨骼
+	// 这样在编辑器中修改骨骼名称时，碰撞体会自动移动到新的骨骼位置
+	if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, LeftHandCollisionAttachmentBoneName))
+	{
+		LeftHandCollisionBox->AttachToComponent(GetMesh(), 
+			FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftHandCollisionAttachmentBoneName);
+	}
+
+	if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, RightHandCollisionAttachmentBoneName))
+	{
+		RightHandCollisionBox->AttachToComponent(GetMesh(), 
+			FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandCollisionAttachmentBoneName);
+	}
+}
+#endif
+
+void AEnemyCharacter::OnBodyCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (APawn* HitPawn = Cast<APawn>(OtherActor))
+	{
+		if (UFightFunctionLibrary::IsTargetPawnHostile(this, HitPawn))
+		{
+			EnemyCombatComponent->OnHitTargetActor(HitPawn);
+		}
+	}
 }
 
 void AEnemyCharacter::InitEnemyStartUpData()
@@ -129,12 +164,6 @@ void AEnemyCharacter::InitEnemyStartUpData()
 					// 调用数据资产的方法，把能力（如技能、属性等）赋予当前角色的能力系统组件
 					// GiveToAbilitySystemComponent是数据资产中的方法，用于初始化角色的能力系统
 					LoadedData->GiveToAbilitySystemComponent(FightAbilitySystemComponent, AbilityApplyLevel);
-
-#pragma region
-#if DEBUG
-					 Debug::Print(TEXT("Enemy StartUpData loaded and applied successfully!"), FColor::Green, 5.0f);
-#endif
-#pragma endregion
 				}
 			}
 		)
