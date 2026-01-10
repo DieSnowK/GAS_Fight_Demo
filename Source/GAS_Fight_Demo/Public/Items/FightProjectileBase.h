@@ -78,4 +78,7 @@ protected:
 private:
 	// 处理投射物伤害应用
 	void HandleApplyProjectileDamage(APawn* InHitPawn, const FGameplayEventData& InPayLoad);
+
+	// 已重叠的角色列表，防止重复伤害
+	TArray<AActor*> OverlappedActors;
 };
