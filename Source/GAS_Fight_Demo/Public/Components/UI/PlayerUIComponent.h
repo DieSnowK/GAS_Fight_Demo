@@ -26,11 +26,11 @@ public:
 	UPROPERTY(BlueprintCallable, BlueprintAssignable)
 	FOnEquippedweaponChangedDelegate OnEquippedWeaponChanged;
 
-	//UPROPERTY(BlueprintCallable, BlueprintAssignable)
-	//FOnAbilityIconSlotUpdatedDelegate OnAbilityIconSlotUpdated;
+	UPROPERTY(BlueprintCallable, BlueprintAssignable)
+	FOnAbilityIconSlotUpdatedDelegate OnAbilityIconSlotUpdated;
 
-	//UPROPERTY(BlueprintCallable, BlueprintAssignable)
-	//FOnAbilityCooldownBeginDelegate OnAbilityCooldownBegin;
+	UPROPERTY(BlueprintCallable, BlueprintAssignable)
+	FOnAbilityCooldownBeginDelegate OnAbilityCooldownBegin;
 
 	//UPROPERTY(BlueprintCallable, BlueprintAssignable)
 	//FOnStoneInteractionDelegate OnStoneInteraction;

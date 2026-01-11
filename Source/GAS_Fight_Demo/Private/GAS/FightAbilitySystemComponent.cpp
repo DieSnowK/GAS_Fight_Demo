@@ -55,7 +55,7 @@ void UFightAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& In
 }
 
 void UFightAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FFightPlayerAbilitySet>& InDefaultWeaponAbilities,
-	/*const TArray<FWarriorHeroSpecialAbilitySet>& InSpecialWeaponAbilities,*/ int32 ApplyLevel, 
+	const TArray<FFightPlayerSpecialAbilitySet>& InSpecialWeaponAbilities, int32 ApplyLevel,
 	TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)
 {
 	if (InDefaultWeaponAbilities.IsEmpty())
@@ -83,19 +83,20 @@ void UFightAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FFigh
 		OutGrantedAbilitySpecHandles.AddUnique(GiveAbility(AbilitySpec));
 	}
 
-	//for (const FWarriorHeroSpecialAbilitySet& AbilitySet : InSpecialWeaponAbilities)
-	//{
-	//	if (!AbilitySet.IsValid())
-	//	{
-	//		continue;
-	//	}
+	// 遍历所有要授予的武器[特殊]能力集合
+	for (const FFightPlayerSpecialAbilitySet& AbilitySet : InSpecialWeaponAbilities)
+	{
+		if (!AbilitySet.IsValid())
+		{
+			continue;
+		}
 
-	//	FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
-	//	AbilitySpec.SourceObject = GetAvatarActor();
-	//	AbilitySpec.Level = ApplyLevel;
-	//	AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.InputTag);
-	//	OutGrantedAbilitySpecHandles.AddUnique(GiveAbility(AbilitySpec));
-	//}
+		FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
+		AbilitySpec.SourceObject = GetAvatarActor();
+		AbilitySpec.Level = ApplyLevel;
+		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.InputTag);
+		OutGrantedAbilitySpecHandles.AddUnique(GiveAbility(AbilitySpec));
+	}
 }
 
 void UFightAbilitySystemComponent::RemovedGrantedHeroWeaponAbilities(UPARAM(Ref)TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove)

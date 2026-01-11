@@ -105,11 +105,6 @@ void UPawnCombatComponent::ToggleCurrentEquippedWeaponCollision(bool bShouldEnab
 	{
 		// 启用碰撞检测，设置为QueryOnly模式（仅查询，不产生物理反应）
 		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-#pragma region Debug
-#if DEBUG
-		Debug::Print(WeaponToToggle->GetName() + TEXT(" weapon collision enabled."), FColor::Green);
-#endif
-#pragma endregion
 	}
 	else
 	{
@@ -118,12 +113,6 @@ void UPawnCombatComponent::ToggleCurrentEquippedWeaponCollision(bool bShouldEnab
 
 		// 清空重叠演员列表，为下一次启用碰撞做准备
 		OverlappedActors.Empty();
-
-#pragma region Debug
-#if DEBUG
-		Debug::Print(WeaponToToggle->GetName() + TEXT(" weapon collision disabled."));
-#endif
-#pragma endregion
 	}
 }
 

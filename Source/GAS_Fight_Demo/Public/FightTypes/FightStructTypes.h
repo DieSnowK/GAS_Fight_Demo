@@ -49,6 +49,24 @@ struct FFightPlayerAbilitySet
 };
 
 
+/**
+ * @brief 英雄特殊能力集合结构体
+ */
+USTRUCT(BlueprintType)
+struct FFightPlayerSpecialAbilitySet : public FFightPlayerAbilitySet
+{
+	GENERATED_BODY()
+
+	// 能力图标材质
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSoftObjectPtr<UMaterialInterface> SoftAbilityIconMaterial;
+
+	// 能力冷却标签
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "Player.Cooldown"))
+	FGameplayTag AbilityCooldownTag;
+};
+
+
 USTRUCT(BlueprintType)
 struct FFightPlayerWeaponData
 {
@@ -75,8 +93,11 @@ struct FFightPlayerWeaponData
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
 	TArray<FFightPlayerAbilitySet> DefaultWeaponAbilities;
 
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
-	//TArray<FWarriorHeroSpecialAbilitySet> SpecialWeaponAbilities;
+	/**
+	 * 武器特殊能力集合数组
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
+	TArray<FFightPlayerSpecialAbilitySet> SpecialWeaponAbilities;
 
 	/**
 	 * 武器基础伤害值
@@ -85,6 +106,9 @@ struct FFightPlayerWeaponData
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FScalableFloat WeaponBaseDamage;
 
+	/**
+	 * 武器图标纹理
+	 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UTexture2D> SoftWeaponIconTexture;
 };

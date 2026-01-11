@@ -5,6 +5,9 @@
 #include "GAS/FightAbilitySystemComponent.h"
 #include "Components/Combat/PawnCombatComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GAS/FightGameplayTags.h"
+#include "FightFunctionLibrary.h"
+
 
 void UFightGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -77,4 +80,36 @@ FActiveGameplayEffectHandle UFightGameplayAbility::BP_ApplyEffectSpecHandleToTar
 
 	// 返回活动的游戏效果句柄
 	return ActiveGameplayEffectHandle;
+}
+
+void UFightGameplayAbility::ApplyGameplayEffectSpecHandleToHitResults(
+	const FGameplayEffectSpecHandle& InSpecHandle, const TArray<FHitResult>& InHitResults)
+{
+	if (InHitResults.IsEmpty())
+	{
+		return;
+	}
+
+	APawn* OwningPawn = CastChecked<APawn>(GetAvatarActorFromActorInfo());
+
+	for (const FHitResult& Hit : InHitResults)
+	{
+		if (APawn* HitPawn = Cast<APawn>(Hit.GetActor()))
+		{
+			if (UFightFunctionLibrary::IsTargetPawnHostile(OwningPawn, HitPawn))
+			{
+				FActiveGameplayEffectHandle ActiveGameplayEffectHandle = NativeApplyEffectSpecHandleToTarget(HitPawn, InSpecHandle);
+
+				if (ActiveGameplayEffectHandle.WasSuccessfullyApplied())
+				{
+					FGameplayEventData Data;
+					Data.Instigator = OwningPawn;
+					Data.Target = HitPawn;
+
+					UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+						HitPawn, FightGameplayTags::Shared_Event_HitReact, Data);
+				}
+			}
+		}
+	}
 }

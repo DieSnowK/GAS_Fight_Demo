@@ -28,3 +28,18 @@ enum class EFightSuccessType : uint8
 	Successful,
 	Failed
 };
+
+UENUM()
+enum class EFightCountDownActionInput : uint8
+{
+	Start,
+	Cancel
+};
+
+UENUM()
+enum class EFightCountDownActionOutput : uint8
+{
+	Updated,
+	Completed,
+	Cancelled
+};

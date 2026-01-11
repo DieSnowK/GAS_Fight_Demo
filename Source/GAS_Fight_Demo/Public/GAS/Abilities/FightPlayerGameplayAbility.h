@@ -83,6 +83,9 @@ public:
 	FGameplayEffectSpecHandle MakePlayerDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, 
 		float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InUsedComboCount);
 
+	UFUNCTION(BlueprintCallable, Category = "Fight|Ability")
+	bool GetAbilityRemainingCooldownByTag(FGameplayTag InCooldownTag, float& TotalCooldown, float& RemainingCooldown);
+
 private:
 	/**
 	 * @brief 缓存的英雄角色引用

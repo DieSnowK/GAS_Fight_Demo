@@ -174,4 +174,11 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Fight|Ability", meta = (DisplayName = "Apply Gameplay Effect Spec Handle To Target Actor", ExpandEnumAsExecs = "OutSuccessType"))
 	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, 
 		const FGameplayEffectSpecHandle& InSpecHandle, EFightSuccessType& OutSuccessType);
+
+	/**
+	 * @brief 将游戏效果规格应用到多个命中结果的目标
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Fight|Ability")
+	void ApplyGameplayEffectSpecHandleToHitResults(
+		const FGameplayEffectSpecHandle& InSpecHandle, const TArray<FHitResult>& InHitResults);
 };

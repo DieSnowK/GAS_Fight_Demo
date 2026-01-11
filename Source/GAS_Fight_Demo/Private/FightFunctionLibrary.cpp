@@ -8,6 +8,7 @@
 #include "Interfaces/PawnCombatInterface.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "GAS/FightGameplayTags.h"
+#include "FightTypes/FightCountDownAction.h"
 
 #include "GASDebugHelper.h"
 
@@ -158,4 +159,46 @@ bool UFightFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(AActor* I
 	FActiveGameplayEffectHandle ActiveGameplayEffectHandle = SourceASC->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC);
 
 	return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}
+
+void UFightFunctionLibrary::CountDown(
+	const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime,
+	EFightCountDownActionInput CountDownInput, UPARAM(DisplayName = "Output") EFightCountDownActionOutput& CountDownOutput,
+	FLatentActionInfo LatentInfo)
+{
+	// 获取当前游戏世界 --> UE中，需要World上下文来执行时间相关的操作
+	UWorld* World = nullptr;
+	if (GEngine)
+	{
+		World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	}
+	if (!World)
+	{
+		return;
+	}
+
+	// 获取LatentActionManager --> Latent Action是UE蓝图系统中用于实现延迟/异步操作的机制
+	FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+	// 查找是否已存在相同标识符的倒计时Action --> LatentInfo包含回调目标和UUID，用于唯一标识一个LatentAction
+	FFightCountDownAction* FoundAction = LatentActionManager.FindExistingAction<FFightCountDownAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+	if (CountDownInput == EFightCountDownActionInput::Start)
+	{
+		// 如果不存在相同标识符的Action，则创建新的倒计时Action
+		if (!FoundAction)
+		{
+			LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID,
+				new FFightCountDownAction(TotalTime, UpdateInterval, OutRemainingTime, CountDownOutput, LatentInfo));
+		}
+		// Note：如果已经存在相同标识符的Action，忽略这次调用（防止重复启动）
+	}
+
+	if (CountDownInput == EFightCountDownActionInput::Cancel)
+	{
+		// 如果找到了对应的Action，则取消它
+		if (FoundAction)
+		{
+			FoundAction->CancelAction();
+		}
+	}
 }

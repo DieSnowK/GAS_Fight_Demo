@@ -78,7 +78,7 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Fight|Ability", meta = (ApplyLevel = "1"))
 	void GrantPlayerWeaponAbilities(const TArray<FFightPlayerAbilitySet>& InDefaultWeaponAbilities,
-		/*const TArray<FWarriorHeroSpecialAbilitySet>& InSpecialWeaponAbilities,*/ int32 ApplyLevel,
+		const TArray<FFightPlayerSpecialAbilitySet>& InSpecialWeaponAbilities, int32 ApplyLevel,
 		TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles); // 在暴露给蓝图或需要持久化的变量中使用 int32
 
 	/**

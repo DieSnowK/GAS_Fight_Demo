@@ -97,7 +97,7 @@ private:
 	TArray<TEnumAsByte<EObjectTypeQuery>> BoxTraceChannel;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
-	bool bShowPersistentDebugShape{ false };
+	bool bShowPersistentDebugShape =  false;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
 	TSubclassOf<UFightWidgetBase> TargetLockWidgetClass;
