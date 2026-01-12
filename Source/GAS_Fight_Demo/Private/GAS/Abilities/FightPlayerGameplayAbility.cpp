@@ -39,6 +39,11 @@ UPlayerCombatComponent* UFightPlayerGameplayAbility::GetPlayerCombatComponentFro
 	return GetPlayerCharacterFromActorInfo()->GetPlayerCombatComponent();
 }
 
+UPlayerUIComponent* UFightPlayerGameplayAbility::GetPlayerUIComponentFromActorInfo()
+{
+	return GetPlayerCharacterFromActorInfo()->GetPlayerUIComponent();
+}
+
 FGameplayEffectSpecHandle UFightPlayerGameplayAbility::MakePlayerDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, 
 	float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InUsedComboCount)
 {

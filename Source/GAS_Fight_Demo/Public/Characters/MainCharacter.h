@@ -136,6 +136,8 @@ private:
 	void Input_SwitchTargetTriggered(const FInputActionValue& InputActionValue);
 	void Input_SwitchTargetCompleted(const FInputActionValue& InputActionValue);
 
+	void Input_PickUpStonesStarted(const FInputActionValue& InputActionValue);
+
 	/**
 	 * @brief 处理能力输入按下事件
 	 *

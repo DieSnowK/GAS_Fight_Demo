@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
- #include "Characters/MainCharacter.h"
+#include "Characters/MainCharacter.h"
 
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -134,8 +134,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	FightInputComponent->BindNativeInputAction(InputConfigDataAsset, FightGameplayTags::InputTag_SwitchTarget,
 		ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
 
-	//FightInputComponent->BindNativeInputAction(InputConfigDataAsset, FightGameplayTags::InputTag_PickUp_Stones,
-	//	ETriggerEvent::Started, this, &ThisClass::Input_PickUpStonesStarted);
+	FightInputComponent->BindNativeInputAction(InputConfigDataAsset, FightGameplayTags::InputTag_PickUp_Stones,
+		ETriggerEvent::Started, this, &ThisClass::Input_PickUpStonesStarted);
 
 	// 绑定能力输入动作(按下和释放) --> 将能力输入标签与对应的按下和释放处理函数绑定
 	// 这允许处理复杂的输入事件，如技能释放
@@ -234,6 +234,14 @@ void AMainCharacter::Input_SwitchTargetCompleted(const FInputActionValue& InputA
 		SwitchDirection.X > 0.f ? FightGameplayTags::Player_Event_SwitchTarget_Right : FightGameplayTags::Player_Event_SwitchTarget_Left,
 		Data
 	);
+}
+
+void AMainCharacter::Input_PickUpStonesStarted(const FInputActionValue& InputActionValue)
+{
+	FGameplayEventData Data;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		this, FightGameplayTags::Player_Event_ConsumeStones, Data);
 }
 
 void AMainCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)

@@ -32,6 +32,6 @@ public:
 	UPROPERTY(BlueprintCallable, BlueprintAssignable)
 	FOnAbilityCooldownBeginDelegate OnAbilityCooldownBegin;
 
-	//UPROPERTY(BlueprintCallable, BlueprintAssignable)
-	//FOnStoneInteractionDelegate OnStoneInteraction;
+	UPROPERTY(BlueprintCallable, BlueprintAssignable)
+	FOnStoneInteractionDelegate OnStoneInteraction;
 };

@@ -11,6 +11,7 @@ class AMainCharacter;
 class AMainPlayerController;
 class UPlayerCombatComponent;
 
+
 /**
  * @class UFightPlayerGameplayAbility
  * @brief 英雄角色游戏能力类
@@ -69,6 +70,12 @@ public:
 	 */
 	UFUNCTION(BlueprintPure, Category = "Fight|Ability")
 	UPlayerCombatComponent* GetPlayerCombatComponentFromActorInfo();
+
+	/**
+	 * @brief 获取当前英雄角色的UI组件
+	 */
+	UFUNCTION(BlueprintPure, Category = "Fight|Ability")
+	UPlayerUIComponent* GetPlayerUIComponentFromActorInfo();
 
 	/**
 	 * 创建英雄伤害效果的规格句柄
