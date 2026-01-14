@@ -40,7 +40,7 @@ struct FFightInputActionConfig
 	 * 用于标识输入动作的Gameplay标签
 	 * 在编辑器中只能选择"Input"分类下的标签
 	 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (categories = "Input")) // meta = (categories = "Input"): 限制只能选择"Input"分类下的标签
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "InputTag")) // meta = (Categories = "InputTag"): 限制只能选择"InputTag"分类下的标签
 	FGameplayTag InputTag;
 
 	/**

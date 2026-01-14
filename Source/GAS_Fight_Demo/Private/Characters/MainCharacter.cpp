@@ -94,16 +94,6 @@ void AMainCharacter::BeginPlay()
 	Super::BeginPlay();
 }
 
-/**
- * @brief 设置玩家输入组件实现
- *
- * 配置增强输入系统和输入映射
- *
- * @details
- * 1. 验证输入配置数据资产的有效性
- * 2. 获取并配置增强输入子系统
- * 3. 绑定移动、视角和能力输入动作
- */
 void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -156,24 +146,26 @@ void AMainCharacter::PossessedBy(AController* NewController)
 			{
 				int32 AbilityApplyLevel = 1;
 
-				//if (AWarriorBaseGameMode* BaseGameMode = GetWorld()->GetAuthGameMode<AWarriorBaseGameMode>())
-				//{
-				//	switch (BaseGameMode->GetCurrentGameDifficulty())
-				//	{
-				//	case EWarriorGameDifficulty::Easy:
-				//		AbilityApplyLevel = 4;
-				//		break;
-				//	case EWarriorGameDifficulty::Normal:
-				//		AbilityApplyLevel = 3;
-				//		break;
-				//	case EWarriorGameDifficulty::Hard:
-				//		AbilityApplyLevel = 2;
-				//		break;
-				//	case EWarriorGameDifficulty::Hell:
-				//		AbilityApplyLevel = 1;
-				//		break;
-				//	}
-				//}
+				if (AFightBaseGameMode* BaseGameMode = GetWorld()->GetAuthGameMode<AFightBaseGameMode>())
+				{
+					switch (BaseGameMode->GetCurrentGameDifficulty())
+					{
+					case EFightGameDifficulty::Easy:
+						AbilityApplyLevel = 4;
+						break;
+					case EFightGameDifficulty::Normal:
+						AbilityApplyLevel = 3;
+						break;
+					case EFightGameDifficulty::Hard:
+						AbilityApplyLevel = 2;
+						break;
+					case EFightGameDifficulty::Hell:
+						AbilityApplyLevel = 1;
+						break;
+					default:
+						break;
+					}
+				}
 
 				// 将加载的数据应用到能力系统组件
 				LoadedData->GiveToAbilitySystemComponent(FightAbilitySystemComponent, AbilityApplyLevel);

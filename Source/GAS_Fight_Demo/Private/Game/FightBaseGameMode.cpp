@@ -3,3 +3,9 @@
 
 #include "Game/FightBaseGameMode.h"
 
+
+AFightBaseGameMode::AFightBaseGameMode()
+{
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
+}

@@ -10,6 +10,7 @@
 
 class UFightAbilitySystemComponent;
 struct FGameplayEffectSpecHandle;
+class UFightGameInstance;
 
 
 /**
@@ -132,4 +133,16 @@ public:
 		EFightCountDownActionInput CountDownInput,
 		UPARAM(DisplayName = "Output") EFightCountDownActionOutput& CountDownOutput,
 		FLatentActionInfo LatentInfo);
+
+	UFUNCTION(BlueprintPure, Category = "Fight|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
+	static UFightGameInstance* GetFightGameInstance(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "Fight|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
+	static void ToggleInputMode(const UObject* WorldContextObject, EFightInputMode InInputMode);
+
+	UFUNCTION(BlueprintCallable, Category = "Fight|FunctionLibrary")
+	static void SaveCurrentGameDifficulty(EFightGameDifficulty InDifficultyToSave);
+
+	UFUNCTION(BlueprintCallable, Category = "Fight|FunctionLibrary")
+	static bool TryLoadSavedGameDifficulty(EFightGameDifficulty& OutSavedDifficulty);
 };

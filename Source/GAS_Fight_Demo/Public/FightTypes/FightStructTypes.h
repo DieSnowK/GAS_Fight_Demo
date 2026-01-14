@@ -28,7 +28,7 @@ struct FFightPlayerAbilitySet
 	 * 用于将游戏输入映射到特定能力，例如攻击、格挡等
 	 * 该标签需要在GameplayTags系统中定义
 	 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "Input"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "InputTag"))
 	FGameplayTag InputTag;
 
 	/**

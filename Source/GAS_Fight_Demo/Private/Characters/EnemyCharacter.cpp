@@ -11,6 +11,7 @@
 #include "Widgets/FightWidgetBase.h"
 #include "Components/BoxComponent.h"
 #include "FightFunctionLibrary.h"
+#include "Game/FightBaseGameMode.h"
 
 #include "GASDebugHelper.h"
 
@@ -129,24 +130,26 @@ void AEnemyCharacter::InitEnemyStartUpData()
 
 	int32 AbilityApplyLevel = 1;
 
-	//if (AWarriorBaseGameMode* BaseGameMode = GetWorld()->GetAuthGameMode<AWarriorBaseGameMode>())
-	//{
-	//	switch (BaseGameMode->GetCurrentGameDifficulty())
-	//	{
-	//	case EWarriorGameDifficulty::Easy:
-	//		AbilityApplyLevel = 1;
-	//		break;
-	//	case EWarriorGameDifficulty::Normal:
-	//		AbilityApplyLevel = 2;
-	//		break;
-	//	case EWarriorGameDifficulty::Hard:
-	//		AbilityApplyLevel = 3;
-	//		break;
-	//	case EWarriorGameDifficulty::Hell:
-	//		AbilityApplyLevel = 4;
-	//		break;
-	//	}
-	//}
+	if (AFightBaseGameMode* BaseGameMode = GetWorld()->GetAuthGameMode<AFightBaseGameMode>())
+	{
+		switch (BaseGameMode->GetCurrentGameDifficulty())
+		{
+		case EFightGameDifficulty::Easy:
+			AbilityApplyLevel = 1;
+			break;
+		case EFightGameDifficulty::Normal:
+			AbilityApplyLevel = 2;
+			break;
+		case EFightGameDifficulty::Hard:
+			AbilityApplyLevel = 3;
+			break;
+		case EFightGameDifficulty::Hell:
+			AbilityApplyLevel = 4;
+			break;
+		default:
+			break;
+		}
+	}
 
 	// 使用Unreal的资源管理器异步加载 CharacterStartUpData 指定的资源（通常是 DataAsset）--> 异步加载避免阻塞游戏主线程，提高性能
 	UAssetManager::GetStreamableManager().RequestAsyncLoad(

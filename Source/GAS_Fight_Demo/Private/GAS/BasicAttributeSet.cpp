@@ -88,33 +88,11 @@ void UBasicAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 		// 通知UI组件当前生命值变化
 		PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
 
-		 const FString Msg = FString::Printf(TEXT("OldHealth: %f, DamageDone: %f, NewCurrentHealth: %f"),
-		 	OldHealth, DamageDone, NewCurrenHealth);
-		 Debug::Print(Msg, FColor::Blue);
-		 //Debug::Print(TEXT("Current Health Rate: "), (GetCurrentHealth() / GetMaxHealth()));
-
 		// 检查角色是否死亡（生命值为0）
 		if (GetCurrentHealth() <= 0.f)
 		{
-			// 调试：检查 AnimInstance 是否有效
-			// if (ACharacter* Character = Cast<ACharacter>(Data.Target.GetAvatarActor()))
-			// {
-			// 	USkeletalMeshComponent* Mesh = Character->GetMesh();
-			// 	UAnimInstance* AnimInstance = Mesh ? Mesh->GetAnimInstance() : nullptr;
-			// 	
-			// 	UE_LOG(LogTemp, Warning, TEXT("[Death Check] Mesh Valid: %s, AnimInstance Valid: %s"),
-			// 		Mesh ? TEXT("YES") : TEXT("NO"),
-			// 		AnimInstance ? TEXT("YES") : TEXT("NO"));
-			// }
-			//
-			// UE_LOG(LogTemp, Error, TEXT("[Death] Adding Death Tag to Actor: %s"), *Data.Target.GetAvatarActor()->GetName());
-
 			UFightFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(),
 				FightGameplayTags::Shared_Status_Dead);
-
-			// UE_LOG(LogTemp, Error, TEXT("[Death] Death Tag Added Successfully"));
-
-
 		}
 	}
 }

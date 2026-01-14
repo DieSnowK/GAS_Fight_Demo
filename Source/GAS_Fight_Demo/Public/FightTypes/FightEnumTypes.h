@@ -43,3 +43,19 @@ enum class EFightCountDownActionOutput : uint8
 	Completed,
 	Cancelled
 };
+
+UENUM(BlueprintType)
+enum class EFightGameDifficulty : uint8
+{
+	Easy,
+	Normal,
+	Hard,
+	Hell
+};
+
+UENUM(BlueprintType)
+enum class EFightInputMode : uint8
+{
+	GameOnly,
+	UIOnly,
+};

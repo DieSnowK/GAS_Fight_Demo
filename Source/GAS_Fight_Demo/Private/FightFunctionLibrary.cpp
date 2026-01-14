@@ -9,6 +9,9 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GAS/FightGameplayTags.h"
 #include "FightTypes/FightCountDownAction.h"
+#include "FightGameInstance.h"
+#include "Kismet/GameplayStatics.h"
+#include "SaveGame/FightSaveGame.h"
 
 #include "GASDebugHelper.h"
 
@@ -201,4 +204,78 @@ void UFightFunctionLibrary::CountDown(
 			FoundAction->CancelAction();
 		}
 	}
+}
+
+UFightGameInstance* UFightFunctionLibrary::GetFightGameInstance(const UObject* WorldContextObject)
+{
+	if (GEngine)
+	{
+		if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+		{
+			return World->GetGameInstance<UFightGameInstance>();
+		}
+	}
+
+	return nullptr;
+}
+
+void UFightFunctionLibrary::ToggleInputMode(const UObject* WorldContextObject, EFightInputMode InInputMode)
+{
+	APlayerController* PlayerController = nullptr;
+
+	if (GEngine)
+	{
+		if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+		{
+			PlayerController = World->GetFirstPlayerController();
+		}
+
+		if (!PlayerController)
+		{
+			return;
+		}
+
+		switch (InInputMode)
+		{
+		case EFightInputMode::GameOnly:
+			PlayerController->SetInputMode(FInputModeGameOnly());
+			PlayerController->bShowMouseCursor = false;
+			break;
+		case EFightInputMode::UIOnly:
+			PlayerController->SetInputMode(FInputModeUIOnly());
+			PlayerController->bShowMouseCursor = true;
+			break;
+		}
+	}
+}
+
+void UFightFunctionLibrary::SaveCurrentGameDifficulty(EFightGameDifficulty InDifficultyToSave)
+{
+	USaveGame* SaveGameObject = UGameplayStatics::CreateSaveGameObject(UFightSaveGame::StaticClass());
+
+	if (UFightSaveGame* FightSaveGameObject = Cast<UFightSaveGame>(SaveGameObject))
+	{
+		FightSaveGameObject->SavedCurrentGameDifficulty = InDifficultyToSave;
+
+		const bool bWasSaved = UGameplayStatics::SaveGameToSlot(
+			FightSaveGameObject, FightGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0);
+	}
+}
+
+bool UFightFunctionLibrary::TryLoadSavedGameDifficulty(EFightGameDifficulty& OutSavedDifficulty)
+{
+	if (UGameplayStatics::DoesSaveGameExist(FightGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0))
+	{
+		USaveGame* SaveGameObject = UGameplayStatics::LoadGameFromSlot(
+			FightGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0);
+
+		if (UFightSaveGame* FightSaveGameObject = Cast<UFightSaveGame>(SaveGameObject))
+		{
+			OutSavedDifficulty = FightSaveGameObject->SavedCurrentGameDifficulty;
+
+			return true;
+		}
+	}
+
+	return false;
 }

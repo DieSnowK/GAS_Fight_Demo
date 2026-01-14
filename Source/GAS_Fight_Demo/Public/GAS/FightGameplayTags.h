@@ -34,7 +34,7 @@ namespace FightGameplayTags
 	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_UnequipAxe);
 
 	// 矛装备/卸下相关输入标签
-	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_EquipSpear);  // 注意：此处可能有拼写错误，应该是Spear
+	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_EquipSpear);
 	GAS_FIGHT_DEMO_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_UnequipSpear);
 
 	// 斧头攻击输入标签

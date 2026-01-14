@@ -14,7 +14,8 @@ public class GAS_Fight_Demo : ModuleRules
             "GameplayAbilities", "GameplayTags", "GameplayTasks",
             "AnimGraphRuntime", "MotionWarping", "Niagara",
 			"NavigationSystem", "AIModule",
-            "UMG"
+            "UMG",
+            "MoviePlayer"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

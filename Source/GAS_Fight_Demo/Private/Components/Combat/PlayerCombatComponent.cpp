@@ -45,11 +45,6 @@ void UPlayerCombatComponent::OnHitTargetActor(AActor* HitActor)
 
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(),
 		FightGameplayTags::Player_Event_HitPause, FGameplayEventData());
-#pragma region Debug
-#if DEBUG
-	Debug::Print(GetOwningPawn()->GetActorNameOrLabel() + TEXT(" hit ") + HitActor->GetActorNameOrLabel(), FColor::Green);
-#endif
-#pragma endregion
 }
 
 void UPlayerCombatComponent::OnWeaponPulledFromTarget(AActor* InteractedActor)
@@ -58,9 +53,4 @@ void UPlayerCombatComponent::OnWeaponPulledFromTarget(AActor* InteractedActor)
 		FightGameplayTags::Player_Event_HitPause, FGameplayEventData());
 
 	// TODO: 在此处添加武器从目标上移开时的处理逻辑
-#pragma region Debug
-#if DEBUG
-	Debug::Print(GetOwningPawn()->GetActorNameOrLabel() + TEXT("'s weapon pulled from ") + InteractedActor->GetActorNameOrLabel());
-#endif
-#pragma endregion
 }
