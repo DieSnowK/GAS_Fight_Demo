@@ -21,7 +21,7 @@ class AMainCharacter;
  * 2. 处理角色进入休闲状态的逻辑
  * 3. 继承并扩展基础角色动画实例的功能
  *
- * @see UWarriorCharacterAnimInstance
+ * @see UGASCharacterAnimInstance
  */
 UCLASS()
 class GAS_FIGHT_DEMO_API UGASPlayerAnimInstance : public UGASCharacterAnimInstance
@@ -40,7 +40,7 @@ protected:
 	 * 用于访问角色特有的属性和方法
 	 */
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|References")
-	TObjectPtr<AMainCharacter> OwningHeroCharacter;
+	TObjectPtr<AMainCharacter> OwningPlayerCharacter;
 
 	/**
 	 * @brief 是否应该进入休闲状态

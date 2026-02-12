@@ -28,7 +28,7 @@ enum class EFightAbilityActivationPolicy : uint8
 	 * 这是大多数主动技能的默认激活方式
 	 * 例如：玩家按下按键释放的技能
 	 */
-	//OnTriggered UMETA(DisplayName = "On Triggered"),
+	OnTriggered UMETA(DisplayName = "On Triggered"),
 
 	/**
 	 * OnGiven - 主动激活策略
@@ -36,10 +36,7 @@ enum class EFightAbilityActivationPolicy : uint8
 	 * 通常用于被动技能或状态效果
 	 * 例如：角色获得时自动生效的增益效果
 	 */
-	//OnGiven UMETA(DisplayName = "On Given")
-
-	OnTriggered,
-	OnGiven
+	OnGiven UMETA(DisplayName = "On Given")
 };
 
 
@@ -139,7 +136,7 @@ protected:
 	UFightAbilitySystemComponent* GetFightAbilitySystemComponentFromActorInfo() const;
 
 	/**
-	 * @brief 将游戏效果规格应用到目标Actor的原生实现
+	 * @brief 将游戏效果规格应用到目标Actor的原生实现 --> 用于单体
 	 * @param TargetActor 目标Actor，效果将应用到该Actor上
 	 * @param InSpecHandle 游戏效果规格句柄，包含要应用的效果信息
 	 * @return FActiveGameplayEffectHandle 活动的游戏效果句柄，可用于后续操作如移除效果
@@ -171,12 +168,13 @@ protected:
 	 * 2. 根据返回的句柄判断操作是否成功
 	 * 3. 设置输出参数以在蓝图中提供反馈
 	 */
-	UFUNCTION(BlueprintCallable, Category = "Fight|Ability", meta = (DisplayName = "Apply Gameplay Effect Spec Handle To Target Actor", ExpandEnumAsExecs = "OutSuccessType"))
+	UFUNCTION(BlueprintCallable, Category = "Fight|Ability", meta = 
+		(DisplayName = "Apply Gameplay Effect Spec Handle To Target Actor", ExpandEnumAsExecs = "OutSuccessType"))
 	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, 
 		const FGameplayEffectSpecHandle& InSpecHandle, EFightSuccessType& OutSuccessType);
 
 	/**
-	 * @brief 将游戏效果规格应用到多个命中结果的目标
+	 * @brief 将游戏效果规格应用到多个命中结果的目标 --> 用于AOE
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Fight|Ability")
 	void ApplyGameplayEffectSpecHandleToHitResults(

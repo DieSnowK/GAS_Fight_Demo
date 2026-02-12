@@ -6,6 +6,7 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "BTTask_RotateToFaceTarget.generated.h"
 
+
 /**
  * @brief 定义任务内存结构，用于存储任务执行期间需要保持的数据
  * 
@@ -20,6 +21,7 @@ struct FRotateToFaceTargetTaskMemory
 	void Reset();
 };
 
+
 UCLASS()
 class GAS_FIGHT_DEMO_API UBTTask_RotateToFaceTarget : public UBTTaskNode
 {
@@ -29,12 +31,14 @@ class GAS_FIGHT_DEMO_API UBTTask_RotateToFaceTarget : public UBTTaskNode
 
 	// ~ Begin UBTNode Interface
 	virtual void InitializeFromAsset(UBehaviorTree& Asset) override;
+
 	/**
 	 * @brief 获取任务需要的内存大小
 	 * 
 	 * BT系统会分配这个大小的内存来存储任务状态
 	 */
 	virtual uint16 GetInstanceMemorySize() const override;
+
 	virtual FString GetStaticDescription() const override;
 	// ~ End UBTNode Interface
 

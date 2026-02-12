@@ -16,6 +16,7 @@ UBTService_OrientToTargetActor::UBTService_OrientToTargetActor()
 	// 初始化服务节点通知标志 --> 这个宏通常设置节点是否需要特定的通知或回调
 	INIT_SERVICE_NODE_NOTIFY_FLAGS();
 
+	// 旋转插值速度
 	RotationInterpSpeed = 5.0f;
 	// 设置服务执行间隔为0，表示每帧都执行
 	Interval = 0.f;
@@ -65,14 +66,16 @@ void UBTService_OrientToTargetActor::TickNode(UBehaviorTreeComponent& OwnerComp,
 	{
 		// 计算从AI当前位置看向目标位置所需的旋转 --> 这个旋转会使AI的正面（X轴正方向）指向目标
 		// FindLookAtRotation(起始位置, 目标位置): 返回看向目标所需的旋转值
-		const FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(OwningPawn->GetActorLocation(),
-			TargetActor->GetActorLocation());
+		const FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(
+			OwningPawn->GetActorLocation(), TargetActor->GetActorLocation());
 
 		// 使用插值计算平滑的旋转过渡 --> RInterpTo(当前旋转, 目标旋转, 时间增量, 插值速度)
+		// 按角度差，做“指数衰减式”逼近目标 --> 只计算这一帧该转多少 --> [多帧累积 --> 人眼看到连续变化 --> 看起来就是平滑旋转]
 		// 根据插值速度和时间增量，从当前旋转平滑过渡到目标旋转 --> 这样可以避免AI突然转向，实现自然的旋转动画
-		const FRotator TargetRot = FMath::RInterpTo(OwningPawn->GetActorRotation(), LookAtRot,
-			DeltaSeconds, RotationInterpSpeed);
+		const FRotator TargetRot = FMath::RInterpTo(OwningPawn->GetActorRotation(),
+			LookAtRot, DeltaSeconds, RotationInterpSpeed);
 
+		// 实际的平滑旋转的效果是由 RInterpTo + SetActorRotation 共同产生的效果
 		OwningPawn->SetActorRotation(TargetRot);
 	}
 }

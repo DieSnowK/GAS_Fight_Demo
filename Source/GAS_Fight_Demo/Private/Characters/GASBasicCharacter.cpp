@@ -64,15 +64,6 @@ void AGASBasicCharacter::PossessedBy(AController* NewController)
 		// 初始化能力Actor信息 --> 第一个参数是拥有能力的Actor，第二个参数是AvatarActor（通常为角色本身）
 		FightAbilitySystemComponent->InitAbilityActorInfo(this, this);
 
-		// 确保AttributeSet已正确注册到AbilitySystemComponent
-		// 这是解决Attribute.Get()断言失败的关键步骤
-		//if (BasicAttributeSet)
-		//{
-		//	// 将属性集作为子对象添加到能力系统组件中
-		//	// 确保属性集在能力系统中正确注册，以便能够应用GameplayEffect
-		//	FightAbilitySystemComponent->AddAttributeSetSubobject(BasicAttributeSet);
-		//}
-
 		// 确保角色启动数据已分配，如果没有分配则输出详细错误信息
 		ensureMsgf(!CharacterStartUpData.IsNull(), TEXT("Forget to Assign Start up Data to %s"), *GetName());
 	}

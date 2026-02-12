@@ -99,7 +99,7 @@ void UFightAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FFigh
 	}
 }
 
-void UFightAbilitySystemComponent::RemovedGrantedHeroWeaponAbilities(UPARAM(Ref)TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove)
+void UFightAbilitySystemComponent::RemovedGrantedPlayerWeaponAbilities(UPARAM(Ref)TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove)
 {
 	if (InSpecHandlesToRemove.IsEmpty())
 	{

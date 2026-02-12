@@ -30,8 +30,7 @@ UBTTask_RotateToFaceTarget::UBTTask_RotateToFaceTarget()
 
 	INIT_TASK_NODE_NOTIFY_FLAGS();
 
-	// 配置黑板键选择器的过滤器
-	// 限制只能选择存储AActor类型对象的黑板键
+	// 配置黑板键选择器的过滤器 --> 限制只能选择存储AActor类型对象的黑板键
 	InTargetToFaceKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(ThisClass, InTargetToFaceKey), AActor::StaticClass());
 }
 
@@ -55,6 +54,7 @@ uint16 UBTTask_RotateToFaceTarget::GetInstanceMemorySize() const
 FString UBTTask_RotateToFaceTarget::GetStaticDescription() const
 {
 	const FString KeyDescription = InTargetToFaceKey.SelectedKeyName.ToString();
+
 	return FString::Printf(TEXT("Smoothly rotates to face %s Key until the angle precision %s is reached"), 
 		*KeyDescription, *FString::SanitizeFloat(AnglePrecision));
 }
@@ -114,6 +114,7 @@ void UBTTask_RotateToFaceTarget::TickTask(UBehaviorTreeComponent& OwnerComp, uin
 		// 计算从AI位置看向目标位置所需的旋转
 		const FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(
 			Memory->OwningPawn->GetActorLocation(), Memory->TargetActor->GetActorLocation());
+
 		// 使用插值计算平滑的旋转过渡
 		const FRotator TargetRot = FMath::RInterpTo(
 			Memory->OwningPawn->GetActorRotation(), LookAtRot, DeltaSeconds, RotationInterpSpeed);

@@ -26,7 +26,7 @@ void UGASPlayerAnimInstance::NativeInitializeAnimation()
 	if (OwningCharacter) // 依赖于父类已初始化的OwningCharacter指针
 	{
 		// 将基础角色对象转换为英雄角色对象并保存引用
-		OwningHeroCharacter = Cast<AMainCharacter>(OwningCharacter);
+		OwningPlayerCharacter = Cast<AMainCharacter>(OwningCharacter);
 	}
 }
 

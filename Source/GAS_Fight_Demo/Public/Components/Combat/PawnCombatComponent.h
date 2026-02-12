@@ -22,12 +22,9 @@ class AFightWeaponBase;
 UENUM(BlueprintType)
 enum class EToggleDamageType : uint8
 {
-	//CurrentEquippedWeapon UMETA(DisplayName = "Current Equipped Weapon"),
-	//LeftHand UMETA(DisplayName = "Left Hand"),
-	//RightHand UMETA(DisplayName = "Right Hand")
-	CurrentEquippedWeapon,
-	LeftHand,
-	RightHand
+	CurrentEquippedWeapon UMETA(DisplayName = "Current Equipped Weapon"),
+	LeftHand UMETA(DisplayName = "Left Hand"),
+	RightHand UMETA(DisplayName = "Right Hand")
 };
 
 

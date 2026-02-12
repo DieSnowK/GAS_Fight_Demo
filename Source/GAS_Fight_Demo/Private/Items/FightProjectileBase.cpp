@@ -102,7 +102,6 @@ void AFightProjectileBase::OnProjectileBeginOverlap(UPrimitiveComponent* Overlap
 	{
 		return;
 	}
-
 	OverlappedActors.AddUnique(OtherActor);
 
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))

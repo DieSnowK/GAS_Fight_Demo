@@ -22,7 +22,7 @@ class UCharacterMovementComponent;
  * 2. 提供角色移动相关数据的访问接口
  * 3. 作为更具体的角色动画实例类（如英雄、敌人）的基类
  *
- * @see UWarriorBaseAnimInstance
+ * @see UGASBaseAnimInstance
  */
 UCLASS()
 class GAS_FIGHT_DEMO_API UGASCharacterAnimInstance : public UGASBaseAnimInstance

@@ -51,17 +51,11 @@ public:
 
 	/**
 	 * @brief 武器击中目标委托
-	 *
-	 * 当武器击中目标时触发的委托
-	 * 可以绑定多个处理函数来响应击中事件
 	 */
 	FOnTargetInteractedDelegate OnWeaponHitTarget;
 
 	/**
 	 * @brief 武器从目标拔出委托
-	 *
-	 * 当武器从目标拔出时触发的委托
-	 * 可以绑定多个处理函数来响应拔出事件
 	 */
 	FOnTargetInteractedDelegate OnWeaponPulledFromTarget;
 

@@ -100,8 +100,7 @@ float UFightFunctionLibrary::GetScalableFloatValueAtLevel(const FScalableFloat& 
 	return InScalableFloat.GetValueAtLevel(InLevel);
 }
 
-FGameplayTag UFightFunctionLibrary::ComputeHitReactDirection(
-	AActor* InAttacker, AActor* InVictim, float& OutAngleDifference)
+FGameplayTag UFightFunctionLibrary::ComputeHitReactDirection(AActor* InAttacker, AActor* InVictim, float& OutAngleDifference)
 {
 	check(InAttacker && InVictim);
 
@@ -164,10 +163,8 @@ bool UFightFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(AActor* I
 	return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
 }
 
-void UFightFunctionLibrary::CountDown(
-	const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime,
-	EFightCountDownActionInput CountDownInput, UPARAM(DisplayName = "Output") EFightCountDownActionOutput& CountDownOutput,
-	FLatentActionInfo LatentInfo)
+void UFightFunctionLibrary::CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime,
+	EFightCountDownActionInput CountDownInput, UPARAM(DisplayName = "Output") EFightCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo)
 {
 	// 获取当前游戏世界 --> UE中，需要World上下文来执行时间相关的操作
 	UWorld* World = nullptr;

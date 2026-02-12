@@ -10,6 +10,8 @@ UAbilityTask_ExecuteTaskOnTick::UAbilityTask_ExecuteTaskOnTick()
 
 UAbilityTask_ExecuteTaskOnTick* UAbilityTask_ExecuteTaskOnTick::ExecuteTaskOnTick(UGameplayAbility* OwningAbility)
 {
+	// 使用NewAbilityTask模板函数创建任务实例 --> UAbilityTask提供的工厂函数，用于安全地创建任务实例
+	// 它负责：分配内存, 设置Owner Ability, 初始化基础属性
 	UAbilityTask_ExecuteTaskOnTick* Node = NewAbilityTask<UAbilityTask_ExecuteTaskOnTick>(OwningAbility);
 
 	return Node;

@@ -60,15 +60,11 @@ void UEnemyCombatComponent::ToggleBodyCollisionBoxCollision(bool bShouldEnable, 
 	switch (ToggleDamageType)
 	{
 	case EToggleDamageType::LeftHand:
-		LeftHandCollisionBox->SetCollisionEnabled(
-			bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+		LeftHandCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
 		break;
-
 	case EToggleDamageType::RightHand:
-		RightHandCollisionBox->SetCollisionEnabled(
-			bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+		RightHandCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
 		break;
-
 	default:
 		break;
 	}

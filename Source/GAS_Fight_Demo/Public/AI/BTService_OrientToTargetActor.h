@@ -6,8 +6,9 @@
 #include "BehaviorTree/BTService.h"
 #include "BTService_OrientToTargetActor.generated.h"
 
+
 /**
- * 
+ * @brief 使AI角色朝向目标Actor
  */
 UCLASS()
 class GAS_FIGHT_DEMO_API UBTService_OrientToTargetActor : public UBTService

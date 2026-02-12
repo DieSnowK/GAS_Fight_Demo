@@ -41,7 +41,7 @@ AFightAIController::AFightAIController(const FObjectInitializer& ObjectInitializ
 	EnemyPerceptionComponent->SetDominantSense(UAISenseConfig_Sight::StaticClass());
 
 	// 绑定感知更新事件：当AI感知到目标状态变化时（发现、丢失等）会触发此事件
-	EnemyPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AFightAIController::OnEnemyPerceptionUpdated);
+	EnemyPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ThisClass::OnEnemyPerceptionUpdated);
 
 	// 将AI控制器分配到特定的团队ID，这里设置为1，表示该AI属于团队1
 	SetGenericTeamId(FGenericTeamId(1));
@@ -52,6 +52,7 @@ ETeamAttitude::Type AFightAIController::GetTeamAttitudeTowards(const AActor& Oth
 	const APawn* PawnToCheck = Cast<const APawn>(&Other);
 	const IGenericTeamAgentInterface* OtherTeamAgent = Cast<const IGenericTeamAgentInterface>(PawnToCheck->GetController());
 
+	// 目前此处认为: [GenericTeamId < 自身GenericTeamId] --> 敌对关系
 	if (OtherTeamAgent && OtherTeamAgent->GetGenericTeamId() < GetGenericTeamId())
 	{
 		return ETeamAttitude::Hostile;
@@ -66,9 +67,11 @@ void AFightAIController::BeginPlay()
 
 	if (UCrowdFollowingComponent* CrowdComp = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent()))
 	{
+		// 设置人群模拟状态
 		CrowdComp->SetCrowdSimulationState(bEnableDetourCrowdAvoidance ? 
 			ECrowdSimulationState::Enabled : ECrowdSimulationState::Disabled);
 
+		// 设置人群避让质量等级
 		switch (DetourCrowdAvoidanceQuality)
 		{
 		case 1:
@@ -85,21 +88,27 @@ void AFightAIController::BeginPlay()
 			break;
 		}
 
+		// 设置避让分组 --> 输入哪个组（32位掩码）
 		CrowdComp->SetAvoidanceGroup(1);
+		// 设置需要避让的组
 		CrowdComp->SetGroupsToAvoid(1);
+		// 设置碰撞查询范围
 		CrowdComp->SetCrowdCollisionQueryRange(CollisionQueryRange);
 	}
 }
 
 void AFightAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
+	// 获取AI的黑板组件 --> 黑板是AI的共享内存空间，用于存储和交换数据
 	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
 	{
+		// 检查黑板中是否已经存在目标Actor --> 这个检查确保不会覆盖已经存在的目标（实现目标锁定，不会轻易切换目标）
 		if (!BlackboardComponent->GetValueAsObject(FName("TargetActor")))
 		{
+			// 检查感知是否成功且Actor有效
 			if (Stimulus.WasSuccessfullySensed() && Actor)
 			{
-				// 此处的FName("TargetActor")应与行为树黑板中的键名一致
+				// 将新发现的目标Actor存储到黑板中 --> 此处的FName("TargetActor")应与行为树黑板中的键名一致
 				BlackboardComponent->SetValueAsObject(FName("TargetActor"), Actor);
 			}
 		}

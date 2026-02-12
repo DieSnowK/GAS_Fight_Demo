@@ -17,9 +17,7 @@ class UPawnCombatInterface : public UInterface
 	GENERATED_BODY()
 };
 
-/**
- * 
- */
+
 class GAS_FIGHT_DEMO_API IPawnCombatInterface
 {
 	GENERATED_BODY()

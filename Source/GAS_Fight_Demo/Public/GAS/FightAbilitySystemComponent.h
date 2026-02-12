@@ -99,7 +99,7 @@ public:
 	 * @note 函数执行完成后会清空传入的句柄数组
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Fight|Ability")
-	void RemovedGrantedHeroWeaponAbilities(UPARAM(Ref) TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove);
+	void RemovedGrantedPlayerWeaponAbilities(UPARAM(Ref) TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove);
 
 	UFUNCTION(BlueprintCallable, Category = "Fight|Ability")
 	bool TryActivateAbilityByTag(FGameplayTag AbilityTagToActivate);

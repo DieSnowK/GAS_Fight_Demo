@@ -49,7 +49,7 @@ FGameplayEffectSpecHandle UFightPlayerGameplayAbility::MakePlayerDamageEffectSpe
 {
 	check(EffectClass);
 
-	// 创建效果上下文句柄，用于存储效果的相关信息
+	// 创建效果上下文句柄，用于存储效果的相关信息 --> 描述一次效果发生时的完整背景
 	FGameplayEffectContextHandle ContextHandle = GetFightAbilitySystemComponentFromActorInfo()->MakeEffectContext();
 	// 设置效果的来源能力
 	ContextHandle.SetAbility(this);
@@ -74,15 +74,14 @@ FGameplayEffectSpecHandle UFightPlayerGameplayAbility::MakePlayerDamageEffectSpe
 	return EffectSpecHandle;
 }
 
-bool UFightPlayerGameplayAbility::GetAbilityRemainingCooldownByTag(FGameplayTag InCooldownTag, 
-	float& TotalCooldown, float& RemainingCooldown)
+bool UFightPlayerGameplayAbility::GetAbilityRemainingCooldownByTag(FGameplayTag InCooldownTag, float& TotalCooldown, float& RemainingCooldown)
 {
 	check(InCooldownTag.IsValid());
 
 	FGameplayEffectQuery CooldownQuery = FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(InCooldownTag.GetSingleTagContainer());
-
 	TArray<TPair<float, float>> TimeRemainingAndDuration = GetAbilitySystemComponentFromActorInfo()->GetActiveEffectsTimeRemainingAndDuration(CooldownQuery);
 
+	// 目前设计: Tag对应的冷却效果只会有一个实例
 	if (!TimeRemainingAndDuration.IsEmpty())
 	{
 		RemainingCooldown = TimeRemainingAndDuration[0].Key;

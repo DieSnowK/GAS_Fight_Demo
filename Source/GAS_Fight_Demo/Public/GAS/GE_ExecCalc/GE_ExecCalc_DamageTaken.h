@@ -6,9 +6,7 @@
 #include "GameplayEffectExecutionCalculation.h"
 #include "GE_ExecCalc_DamageTaken.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class GAS_FIGHT_DEMO_API UGE_ExecCalc_DamageTaken : public UGameplayEffectExecutionCalculation
 {

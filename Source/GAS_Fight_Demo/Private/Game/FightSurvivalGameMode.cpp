@@ -18,6 +18,7 @@ void AFightSurvivalGameMode::InitGame(const FString& MapName, const FString& Opt
 
 	EFightGameDifficulty SavedGameDifficulty;
 
+	// 尝试加载保存的游戏难度设置，如果成功则应用到当前游戏模式
 	if (UFightFunctionLibrary::TryLoadSavedGameDifficulty(SavedGameDifficulty))
 	{
 		CurrentGameDifficulty = SavedGameDifficulty;
@@ -146,6 +147,7 @@ FFightEnemyWaveSpawnerTableRow* AFightSurvivalGameMode::GetCurrentWaveSpawnerTab
 
 int32 AFightSurvivalGameMode::TrySpawnWaveEnemies()
 {
+	// 检查并获取关卡中的所有目标点 --> TargetPoint是UE中的一种标记点，用于指定敌人生成位置
 	if (TargetPointArray.IsEmpty())
 	{
 		UGameplayStatics::GetAllActorsOfClass(this, ATargetPoint::StaticClass(), TargetPointArray);
@@ -154,9 +156,11 @@ int32 AFightSurvivalGameMode::TrySpawnWaveEnemies()
 
 	uint32 EnemiesSpawnedThisTime = 0;
 
+	// 设置Actor生成参数
 	FActorSpawnParameters SpawnParam;
 	SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
+	// 按TableRow遍历一个波次应生成的Enemy --> 一个波次可能生成多种Enemy，每种Enemy的生成数量也可能不同
 	for (const FFightEnemyWaveSpawnerInfo& SpawnerInfo : GetCurrentWaveSpawnerTableRow()->EnemyWaveSpawnerDefinitions)
 	{
 		if (SpawnerInfo.SoftEnemyClassToSpawn.IsNull())
@@ -164,22 +168,29 @@ int32 AFightSurvivalGameMode::TrySpawnWaveEnemies()
 			continue;
 		}
 
+		// 根据配置的范围随机决定本次生成多少这种敌人
 		const int32 NumToSpawn = FMath::RandRange(SpawnerInfo.MinPerSpawnCount, SpawnerInfo.MaxPerSpawnCount);
 
+		// 从预加载的Map中获取已加载的敌人类 (TSoftClassPtr -> UClass*)
 		UClass* LoadedEnemyClass = PreLoadedEnemyClassMap.FindChecked(SpawnerInfo.SoftEnemyClassToSpawn);
 
+		// 根据NumToSpawn循环生成指定数量的敌人
 		for (int32 i = 0; i < NumToSpawn; i++)
 		{
+			// 随机选择一个目标点作为生成原点
 			const int32 RandomTargetPointIndex = FMath::RandRange(0, TargetPointArray.Num() - 1);
+			// 获取目标点的位置
 			const FVector SpawnOrigin = TargetPointArray[RandomTargetPointIndex]->GetActorLocation();
+			// 获取目标点的朝向作为生成旋转
 			const FRotator SpawnRotation = TargetPointArray[RandomTargetPointIndex]->GetActorForwardVector().ToOrientationRotator();
 
+			// 在生成原点周围寻找导航网格上的随机可达点
 			FVector RandomLocation;
-
 			UNavigationSystemV1::K2_GetRandomReachablePointInRadius(this, SpawnOrigin, RandomLocation, 400.0f);
-
+			// 添加垂直偏移，防止敌人卡在地面下
 			RandomLocation += FVector(0.0f, 0.0f, 150.0f);
 
+			// 实际生成敌人Actor
 			AEnemyCharacter* SpawnedEnemy = GetWorld()->SpawnActor<AEnemyCharacter>(LoadedEnemyClass, RandomLocation, SpawnRotation, SpawnParam);
 
 			if (SpawnedEnemy)
@@ -208,12 +219,11 @@ bool AFightSurvivalGameMode::ShouldKeepSpawnEnemies() const
 void AFightSurvivalGameMode::OnEnemyDestroyed(AActor* DestroyedActor)
 {
 	CurrentSpawnedEnemiesCounter--;
-
+	 
 	if (ShouldKeepSpawnEnemies())
 	{
 		CurrentSpawnedEnemiesCounter += TrySpawnWaveEnemies();
 	}
-
 	else if (CurrentSpawnedEnemiesCounter <= 0)
 	{
 		TotalSpawnedEnemiesThisWaveCounter = 0;

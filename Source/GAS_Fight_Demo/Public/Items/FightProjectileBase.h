@@ -52,7 +52,7 @@ protected:
 	EProjectileDamagePolicy ProjectileDamagePolicy = EProjectileDamagePolicy::OnHit;
 
 	// 投射物伤害效果规格句柄：包含要应用的GameplayEffect信息
-	UPROPERTY(BlueprintReadOnly, BlueprintReadonly, Category = "Projectile", meta = (ExposeOnSpawn = "true"))
+	UPROPERTY(BlueprintReadonly, Category = "Projectile", meta = (ExposeOnSpawn = "true"))
 	FGameplayEffectSpecHandle ProjectileDamageEffectSpecHandle;
 
 	// 碰撞事件回调函数 --> 当投射物碰撞到其他物体时调用

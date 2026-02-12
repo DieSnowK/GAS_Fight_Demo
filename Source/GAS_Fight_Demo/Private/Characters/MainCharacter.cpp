@@ -230,10 +230,8 @@ void AMainCharacter::Input_SwitchTargetCompleted(const FInputActionValue& InputA
 
 void AMainCharacter::Input_PickUpStonesStarted(const FInputActionValue& InputActionValue)
 {
-	FGameplayEventData Data;
-
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
-		this, FightGameplayTags::Player_Event_ConsumeStones, Data);
+		this, FightGameplayTags::Player_Event_ConsumeStones, FGameplayEventData());
 }
 
 void AMainCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)

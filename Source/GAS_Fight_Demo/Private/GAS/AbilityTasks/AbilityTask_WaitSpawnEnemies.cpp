@@ -15,6 +15,7 @@ UAbilityTask_WaitSpawnEnemies* UAbilityTask_WaitSpawnEnemies::WaitSpawnEnemies(
     const FVector& SpawnOrigin, float RandomSpawnRadius)
 {
 	UAbilityTask_WaitSpawnEnemies* Node = NewAbilityTask<UAbilityTask_WaitSpawnEnemies>(OwningAbility);
+
 	Node->CachedEventTag = EventTag;
 	Node->CachedSoftEnemyClassToSpawn = SoftEnemyClassToSpawn;
 	Node->CachedNumToSpawn = NumToSpawn;

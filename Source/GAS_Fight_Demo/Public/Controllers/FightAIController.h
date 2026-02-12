@@ -36,6 +36,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UAISenseConfig_Sight* AISenseConfig_Sight;
 
+	/**
+	 * @brief 当AI感知组件检测到目标状态变化时调用的回调函数
+	 * 
+	 * @param Actor 被感知的目标Actor
+	 * @param Stimulus 感知刺激信息，包含感知类型、位置、时间等数据
+	 */
 	UFUNCTION()
 	virtual void OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 

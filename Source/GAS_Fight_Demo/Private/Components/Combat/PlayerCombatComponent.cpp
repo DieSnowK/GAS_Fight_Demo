@@ -51,6 +51,4 @@ void UPlayerCombatComponent::OnWeaponPulledFromTarget(AActor* InteractedActor)
 {
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(),
 		FightGameplayTags::Player_Event_HitPause, FGameplayEventData());
-
-	// TODO: 在此处添加武器从目标上移开时的处理逻辑
 }

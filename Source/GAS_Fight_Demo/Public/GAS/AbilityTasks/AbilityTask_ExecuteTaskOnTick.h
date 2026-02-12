@@ -20,6 +20,11 @@ class GAS_FIGHT_DEMO_API UAbilityTask_ExecuteTaskOnTick : public UAbilityTask
 public:
 	UAbilityTask_ExecuteTaskOnTick();
 
+	/**
+	 * @brief 静态工厂方法：创建ExecuteTaskOnTick任务实例
+	 * 
+	 * 这是创建AbilityTask的标准模式，提供类型安全的实例创建
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Fight|AbilityTasks", meta = (HidePin = "OwningAbility", DefaultToSelf = "OwningAbility", BlueprintInternalUseOnly = "true"))
 	static UAbilityTask_ExecuteTaskOnTick* ExecuteTaskOnTick(UGameplayAbility* OwningAbility);
 
@@ -30,5 +35,3 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnAbilityTaskTickDelegate OnAbilityTaskTick;
 };
-
-

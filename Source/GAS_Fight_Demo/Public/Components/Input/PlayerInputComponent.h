@@ -20,7 +20,10 @@ class GAS_FIGHT_DEMO_API UPlayerInputComponent : public UEnhancedInputComponent
 	
 public:
 	/**
-	 * 绑定原生输入动作的模板函数
+	 * @brief 绑定原生输入动作的模板函数 --> 绑定的是 [具体输入 --> 具体函数]
+	 * 
+	 * 低抽象，强定向
+	 * UDataAsset --Tag--> InputAction --> Specific CallBackFunc
 	 *
 	 * @tparam UserObject   用户对象类型（通常是拥有此输入组件的Actor或Controller）
 	 * @tparam CallbackFunc 回调函数类型
@@ -35,8 +38,11 @@ public:
 		ETriggerEvent TriggerEvent, UserObject* ContextObject, const CallbackFunc& Func);
 
 	/**
-	 * 绑定能力输入动作的模板函数
+	 * @brief 绑定能力输入动作的模板函数 --> 绑定的是 [输入 --> GAS语义]
 	 *
+	 * 高抽象，弱定向
+	 * 输入不再直接 驱动函数，而是 驱动GAS语义
+	 * 
 	 * @tparam UserObject      用户对象类型
 	 * @tparam CallbackFunc    回调函数类型
 	 * @param InInputConfig    输入配置数据资产

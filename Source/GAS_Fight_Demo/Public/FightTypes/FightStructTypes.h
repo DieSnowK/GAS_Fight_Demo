@@ -61,7 +61,7 @@ struct FFightPlayerSpecialAbilitySet : public FFightPlayerAbilitySet
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UMaterialInterface> SoftAbilityIconMaterial;
 
-	// 能力冷却标签
+	// 能力冷却标签 --> 用于标识该能力的冷却状态，可用来查询和显示能力的剩余冷却时间
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "Player.Cooldown"))
 	FGameplayTag AbilityCooldownTag;
 };

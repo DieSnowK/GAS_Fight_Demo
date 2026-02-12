@@ -68,7 +68,7 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDama
 
 void UPawnCombatComponent::OnHitTargetActor(AActor* HitActor)
 {
-	// TODO: 实现击中目标的具体逻辑
+	// TODO: 实现击中目标的具体逻辑 --> 交给子类实现
 	// 可能包括：
 	// 1. 应用伤害效果
 	// 2. 播放击中特效
@@ -78,7 +78,7 @@ void UPawnCombatComponent::OnHitTargetActor(AActor* HitActor)
 
 void UPawnCombatComponent::OnWeaponPulledFromTarget(AActor* InteractedActor)
 {
-	// TODO: 实现武器拔出的具体逻辑
+	// TODO: 实现武器拔出的具体逻辑 --> 交给子类实现
 	// 可能包括：
 	// 1. 处理拔出时的伤害或效果
 	// 2. 播放拔出特效
@@ -90,7 +90,6 @@ void UPawnCombatComponent::ToggleCurrentEquippedWeaponCollision(bool bShouldEnab
 {
 	// 获取当前装备的武器实例
 	AFightWeaponBase* WeaponToToggle = GetCharacterCurrentEquippedWeapon();
-
 	check(WeaponToToggle);
 
 	if (bShouldEnable)
